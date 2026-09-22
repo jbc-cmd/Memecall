@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MemeCall Settings & Camera Lab</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="logo-icon">🎭</div>
+        <div>
+          <h1>MemeCall</h1>
+          <p class="subtitle">AI Pose-Activated Meme Filter</p>
+        </div>
+      </div>
+      <div class="power-toggle-wrapper">
+        <label class="switch">
+          <input type="checkbox" id="master-toggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="lab">🎥 Camera Lab</button>
+      <button class="tab-btn" data-tab="poses">⚡ Poses & Memes</button>
+      <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+    </div>
+
+    <!-- Tab 1: Camera Lab / Live Sandbox -->
+    <div class="tab-content active" id="tab-lab">
+      <div class="camera-preview-card">
+        <div class="canvas-wrapper">
+          <video id="lab-video" autoplay playsinline muted style="display: none;"></video>
+          <canvas id="lab-canvas" width="640" height="360"></canvas>
+          <div class="camera-overlay-badge" id="lab-badge">
+            <span class="live-indicator"></span>
+            <span id="lab-badge-text">Click "Start Camera"</span>
+          </div>
+        </div>
+        <div class="lab-controls">
+          <button class="btn btn-primary" id="btn-start-camera">▶️ Start Camera Test</button>
+          <button class="btn btn-secondary" id="btn-toggle-debug">🔍 Toggle Landmarks</button>
+        </div>
+      </div>
+
+      <div class="quick-trigger-bar">
+        <div class="bar-header">Manual Trigger Testing:</div>
+        <div class="quick-icons-grid" id="quick-test-grid">
+          <!-- Populated by popup.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Poses & Custom Meme Manager -->
+    <div class="tab-content" id="tab-poses">
+      <div class="section-title">Configure Pose Triggers</div>
+      <div class="meme-list" id="pose-list">
+        <!-- Dynamic list of meme triggers -->
+      </div>
+    </div>
+
+    <!-- Tab 3: Settings & Calling Guide -->
+    <div class="tab-content" id="tab-settings">
+      <div class="setting-group">
+        <label class="setting-label">
+          <span>AI Pose Sensitivity</span>
+          <span id="sensitivity-val" class="badge">65%</span>
+        </label>
+        <input type="range" id="sensitivity-slider" min="10" max="95" value="65" class="slider-range">
+        <p class="setting-hint">Higher values trigger faster; lower values reduce false positives.</p>
+      </div>
+
+      <div class="setting-group">
+        <div class="setting-row">
+          <div>
+            <div class="setting-name">Audio Meme SFX</div>
+            <div class="setting-hint">Play synthesized sound effects when a meme activates</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="sfx-toggle" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <h3>🚀 How to use in Google Meet & Zoom:</h3>
+        <ol>
+          <li>Join your <strong>Google Meet</strong>, <strong>Zoom</strong>, or <strong>Teams</strong> call.</li>
+          <li>Ensure your webcam is turned ON. MemeCall automatically enhances your video stream.</li>
+          <li>Strike any pose (Peace ✌️, Thumbs Up 👍, Mewing 🤫, Scream 😱, etc.) in front of the camera!</li>
+          <li>Use the floating in-call pill on the top right to control or trigger stickers anytime.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>Works on Google Meet, Zoom Web, Teams, Discord & Classroom</span>
+    </footer>
+  </div>
+
+  <script src="../engine/meme-assets.js"></script>
+  <script src="../engine/audio-sfx.js"></script>
+  <script src="../engine/pose-detector.js"></script>
+  <script src="../engine/meme-renderer.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+/* MemeCall In-Call Floating HUD Styles */
+#memecall-hud-root {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  user-select: none;
+  pointer-events: auto;
+}
+
+.memecall-hud-pill {
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  border-radius: 40px;
+  padding: 6px 14px 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f8fafc;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: grab;
+}
+
+.memecall-hud-pill:active {
+  cursor: grabbing;
+}
+
+.memecall-hud-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.memecall-hud-logo {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #8b5cf6, #d946ef);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  -webkit-text-fill-color: initial;
+  box-shadow: 0 0 10px rgba(217, 70, 239, 0.5);
+}
+
+.memecall-hud-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.memecall-hud-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  animation: memecall-pulse 2s infinite;
+}
+
+.memecall-hud-dot.inactive {
+  background: #64748b;
+  box-shadow: none;
+  animation: none;
+}
+
+@keyframes memecall-pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.memecall-hud-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.memecall-hud-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.memecall-hud-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+.memecall-hud-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 290px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.memecall-hud-panel.hidden {
+  display: none;
+}
+
+.memecall-panel-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #94a3b8;
+}
+
+.memecall-grid-memes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.memecall-meme-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: white;
+}
+
+.memecall-meme-chip:hover {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3));
+  border-color: rgba(236, 72, 153, 0.5);
+  transform: translateY(-2px);
+}
+
+.memecall-meme-chip:active {
+  transform: scale(0.92);
+}
+
+.memecall-meme-chip-name {
+  font-size: 9px;
+  color: #cbd5e1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 52px;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 480px) {
+  #memecall-hud-root {
+    top: calc(env(safe-area-inset-top, 12px) + 10px);
+    right: 10px;
+  }
+
+  .memecall-hud-pill {
+    padding: 4px 10px 4px 6px;
+    gap: 6px;
+  }
+
+  .memecall-hud-brand span {
+    display: none; /* Icon only on compact mobile */
+  }
+
+  .memecall-hud-status {
+    padding: 3px 8px;
+    font-size: 11px;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .memecall-hud-panel {
+    width: min(300px, 92vw);
+    right: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .memecall-grid-memes {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .memecall-meme-chip {
+    padding: 6px 2px;
+    font-size: 16px;
+  }
+}
+

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MemeCall Video Call Simulator (Google Meet / Zoom Mode)</title>
+  <link rel="stylesheet" href="content/hud-overlay.css">
+  <style>
+    :root {
+      --bg: #12141a;
+      --card-bg: #1e222d;
+      --accent: #8b5cf6;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(18, 20, 26, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .meeting-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .meeting-badge {
+      background: rgba(34, 197, 94, 0.15);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .meeting-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    /* Video Grid */
+    .call-stage {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      padding: 18px 24px;
+      overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .call-stage {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .participant-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .participant-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .participant-badge {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 10;
+    }
+
+    .mock-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+    }
+
+    .camera-prompt {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .btn-camera {
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(236, 72, 153, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .btn-camera:hover {
+      transform: scale(1.05);
+    }
+
+    /* Bottom Action Controls */
+    .bottom-bar {
+      height: 80px;
+      background: rgba(18, 20, 26, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .call-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #272d3b;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .call-btn:hover {
+      background: #374151;
+      transform: scale(1.1);
+    }
+
+    .call-btn.hangup {
+      background: #ef4444;
+    }
+
+    .call-btn.hangup:hover {
+      background: #dc2626;
+    }
+
+    /* Instructions sidebar banner */
+    .pose-guide-banner {
+      position: absolute;
+      top: 80px;
+      left: 24px;
+      max-width: 320px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      z-index: 100;
+    }
+
+    .pose-guide-banner h4 {
+      font-size: 13px;
+      color: #c084fc;
+      margin-bottom: 6px;
+    }
+
+    .pose-guide-banner ul {
+      padding-left: 18px;
+      color: #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <div class="meeting-info">
+      <span class="meeting-title">🎉 MemeCall Live Video Room</span>
+      <span class="meeting-badge">● LIVE 00:04:20</span>
+    </div>
+    <div style="font-size: 13px; color: var(--muted);">
+      Strike a pose in front of your camera! ✌️ 👍 🤫 😱 🤦 💪 🫶 👉 🧠 🫡
+    </div>
+  </header>
+
+  <!-- Left Pose Cheat Sheet -->
+  <div class="pose-guide-banner">
+    <h4>⚡ Pose Cheat Sheet:</h4>
+    <ul>
+      <li>💅 <strong>Baddie Gronk:</strong> Mascara Wand & Fluttery Eyelashes</li>
+      <li>🤓 <strong>Nerd Gronk:</strong> Thick Glasses & "Umm Actually..." ☝️</li>
+      <li>😐 <strong>NPC Gronk:</strong> 1000-Yard Stare & Wide Flat Head</li>
+      <li>🤨 <strong>Smug Gronk:</strong> Eyebrow / Chin Tilt (Sus / Vine Boom)</li>
+      <li>😫 <strong>Scream Gronk:</strong> Gaping Wojak Scream & Shock Eyes</li>
+      <li>🍭 <strong>Beanie Gronk:</strong> Spinning Propeller Hat & Rainbow Lollipop</li>
+      <li>😄 <strong>Laugh Gronk:</strong> Buck Teeth Laughing Creature</li>
+      <li>😛 <strong>Blep Gronk:</strong> Derp Blep with Tongue Out</li>
+      <li>✌️ <strong>Peace Sign:</strong> Anime Kawaii Sparkles</li>
+      <li>👍 <strong>Thumbs Up:</strong> Gigachad Glasses & APPROVED</li>
+      <li>🤫 <strong>Mewing:</strong> Shhh Mogging Jawline</li>
+      <li>😱 <strong>Scream:</strong> Hands on cheeks for shock</li>
+      <li>🤦 <strong>Facepalm:</strong> Hand on head for BRUH</li>
+      <li>💪 <strong>Muscle Flex:</strong> Super Saiyan Aura</li>
+      <li>🫶 <strong>Heart:</strong> Love hearts explosion</li>
+      <li>👉 <strong>Finger Gun:</strong> Comic POW! & Starburst</li>
+      <li>🧠 <strong>Hand on Chin:</strong> 500 IQ Galaxy Brain</li>
+    </ul>
+  </div>
+
+  <!-- Video Calling Stage -->
+  <main class="call-stage">
+    <!-- User's Camera (Augmented via MemeCall WebRTC) -->
+    <div class="participant-card">
+      <video id="user-call-video" autoplay playsinline muted></video>
+      <div class="camera-prompt" id="prompt-box">
+        <div class="mock-avatar">📹</div>
+        <p style="color: #94a3b8; font-size: 13px;">Turn on your camera to test pose detection and meme stickers</p>
+        <button class="btn-camera" id="btn-enable-cam">Turn On Camera</button>
+      </div>
+      <div class="participant-badge">
+        <span>🟢 You (MemeCall Enhanced)</span>
+      </div>
+    </div>
+
+    <!-- Simulated Remote Meeting Participant -->
+    <div class="participant-card">
+      <div class="mock-avatar">🤖</div>
+      <div style="position: absolute; text-align: center; color: var(--muted); font-size: 13px; margin-top: 130px;">
+        Prof. Alex (Watching your memes)
+      </div>
+      <div class="participant-badge">
+        <span>Prof. Alex</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Action Bar -->
+  <footer class="bottom-bar">
+    <button class="call-btn" id="btn-toggle-mic" title="Mute/Unmute">🎤</button>
+    <button class="call-btn" id="btn-toggle-cam" title="Camera On/Off">📷</button>
+    <button class="call-btn" title="Share Screen">🖥️</button>
+    <button class="call-btn" title="Raise Hand">✋</button>
+    <button class="call-btn hangup" title="Leave Call">📞</button>
+  </footer>
+
+  <!-- Load MemeCall Engine Scripts -->
+  <script src="engine/meme-assets.js"></script>
+  <script src="engine/audio-sfx.js"></script>
+  <script src="engine/pose-detector.js"></script>
+  <script src="engine/meme-renderer.js"></script>
+  <script src="engine/camera-interceptor.js"></script>
+  <script src="content/hud-bridge.js"></script>
+
+  <script>
+    const userVideo = document.getElementById('user-call-video');
+    const promptBox = document.getElementById('prompt-box');
+    const btnEnableCam = document.getElementById('btn-enable-cam');
+    const btnToggleCam = document.getElementById('btn-toggle-cam');
+    let currentStream = null;
+
+    async function startMeetingVideo() {
+      try {
+        // Calls standard navigator.mediaDevices.getUserMedia which gets intercepted by MemeCall!
+        currentStream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 1280, height: 720 },
+          audio: false
+        });
+        userVideo.srcObject = currentStream;
+        await userVideo.play();
+        promptBox.style.display = 'none';
+      } catch (err) {
+        console.error('getUserMedia error:', err);
+        alert('Please allow camera permission to test MemeCall in this simulated meeting room!');
+      }
+    }
+
+    btnEnableCam.addEventListener('click', startMeetingVideo);
+    btnToggleCam.addEventListener('click', () => {
+      if (!currentStream) {
+        startMeetingVideo();
+      } else {
+        currentStream.getTracks().forEach(t => t.stop());
+        currentStream = null;
+        userVideo.srcObject = null;
+        promptBox.style.display = 'flex';
+      }
+    });
+  </script>
+</body>
+</html>

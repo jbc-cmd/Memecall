@@ -1,0 +1,85 @@
+{
+  "manifest_version": 3,
+  "name": "MemeCall - AI Pose & Meme Camera Filter",
+  "version": "1.0.0",
+  "description": "Strike a pose in Google Meet, Zoom, or Teams to trigger hilarious meme stickers and animated filters live on your webcam!",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "MemeCall Settings & Camera Lab",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "*://meet.google.com/*",
+    "*://*.zoom.us/*",
+    "*://teams.microsoft.com/*",
+    "*://teams.live.com/*",
+    "*://classroom.google.com/*",
+    "*://discord.com/*",
+    "*://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://meet.google.com/*",
+        "*://*.zoom.us/*",
+        "*://teams.microsoft.com/*",
+        "*://teams.live.com/*",
+        "*://classroom.google.com/*",
+        "*://discord.com/*",
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "engine/meme-assets.js",
+        "engine/audio-sfx.js",
+        "engine/pose-detector.js",
+        "engine/meme-renderer.js",
+        "engine/camera-interceptor.js"
+      ],
+      "world": "MAIN",
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "*://meet.google.com/*",
+        "*://*.zoom.us/*",
+        "*://teams.microsoft.com/*",
+        "*://teams.live.com/*",
+        "*://classroom.google.com/*",
+        "*://discord.com/*",
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content/hud-bridge.js"
+      ],
+      "css": [
+        "content/hud-overlay.css"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "icons/*",
+        "assets/*",
+        "engine/*",
+        "content/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
