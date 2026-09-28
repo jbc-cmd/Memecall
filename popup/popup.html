@@ -4,20 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MemeCall Settings & Camera Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
+  <div class="ambient-glow"></div>
   <div class="app-container">
     <!-- Header -->
     <header class="header">
       <div class="brand">
         <div class="logo-icon">🎭</div>
-        <div>
-          <h1>MemeCall</h1>
+        <div class="brand-text">
+          <div class="brand-title-row">
+            <h1>MemeCall</h1>
+            <span class="version-tag">v1.0.1</span>
+          </div>
           <p class="subtitle">AI Pose-Activated Meme Filter</p>
         </div>
       </div>
-      <div class="power-toggle-wrapper">
+      <div class="power-toggle-wrapper" title="Enable or Disable MemeCall">
         <label class="switch">
           <input type="checkbox" id="master-toggle" checked>
           <span class="slider"></span>
@@ -26,11 +33,20 @@
     </header>
 
     <!-- Main Navigation Tabs -->
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="lab">🎥 Camera Lab</button>
-      <button class="tab-btn" data-tab="poses">⚡ Poses & Memes</button>
-      <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
-    </div>
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="lab">
+        <span class="tab-icon">🎥</span>
+        <span>Camera Lab</span>
+      </button>
+      <button class="tab-btn" data-tab="poses">
+        <span class="tab-icon">⚡</span>
+        <span>Poses & Memes</span>
+      </button>
+      <button class="tab-btn" data-tab="settings">
+        <span class="tab-icon">⚙️</span>
+        <span>Settings</span>
+      </button>
+    </nav>
 
     <!-- Tab 1: Camera Lab / Live Sandbox -->
     <div class="tab-content active" id="tab-lab">
@@ -42,15 +58,25 @@
             <span class="live-indicator"></span>
             <span id="lab-badge-text">Click "Start Camera"</span>
           </div>
+          <div class="fps-counter" id="fps-badge">60 FPS</div>
         </div>
         <div class="lab-controls">
-          <button class="btn btn-primary" id="btn-start-camera">▶️ Start Camera Test</button>
-          <button class="btn btn-secondary" id="btn-toggle-debug">🔍 Toggle Landmarks</button>
+          <button class="btn btn-primary" id="btn-start-camera">
+            <span class="btn-icon">▶️</span>
+            <span>Start Camera Test</span>
+          </button>
+          <button class="btn btn-secondary" id="btn-toggle-debug" title="Show AI pose detection landmarks and wireframe">
+            <span class="btn-icon">🔍</span>
+            <span>Debug Wireframe</span>
+          </button>
         </div>
       </div>
 
       <div class="quick-trigger-bar">
-        <div class="bar-header">Manual Trigger Testing:</div>
+        <div class="bar-header-row">
+          <span class="bar-header">Instant Meme Test</span>
+          <span class="badge-hint">Click any icon to fire</span>
+        </div>
         <div class="quick-icons-grid" id="quick-test-grid">
           <!-- Populated by popup.js -->
         </div>
@@ -59,7 +85,14 @@
 
     <!-- Tab 2: Poses & Custom Meme Manager -->
     <div class="tab-content" id="tab-poses">
-      <div class="section-title">Configure Pose Triggers</div>
+      <div class="pose-search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="pose-search-input" placeholder="Search pose or meme...">
+      </div>
+      <div class="section-header-row">
+        <span class="section-title">Active Pose Triggers</span>
+        <span class="badge-count" id="pose-count-badge">10 active</span>
+      </div>
       <div class="meme-list" id="pose-list">
         <!-- Dynamic list of meme triggers -->
       </div>
@@ -68,19 +101,27 @@
     <!-- Tab 3: Settings & Calling Guide -->
     <div class="tab-content" id="tab-settings">
       <div class="setting-group">
-        <label class="setting-label">
-          <span>AI Pose Sensitivity</span>
+        <div class="setting-label">
+          <div class="setting-title-wrapper">
+            <span class="setting-name">AI Gesture Sensitivity</span>
+            <span class="setting-subtext">Calibrate trigger threshold</span>
+          </div>
           <span id="sensitivity-val" class="badge">65%</span>
-        </label>
-        <input type="range" id="sensitivity-slider" min="10" max="95" value="65" class="slider-range">
-        <p class="setting-hint">Higher values trigger faster; lower values reduce false positives.</p>
+        </div>
+        <div class="slider-wrapper">
+          <input type="range" id="sensitivity-slider" min="10" max="95" value="65" class="slider-range">
+          <div class="slider-labels">
+            <span>Precise (Low)</span>
+            <span>Instant (High)</span>
+          </div>
+        </div>
       </div>
 
       <div class="setting-group">
         <div class="setting-row">
-          <div>
+          <div class="setting-info-block">
             <div class="setting-name">Audio Meme SFX</div>
-            <div class="setting-hint">Play synthesized sound effects when a meme activates</div>
+            <div class="setting-hint">Instant zero-latency Web Audio sound effects</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="sfx-toggle" checked>
@@ -90,19 +131,30 @@
       </div>
 
       <div class="guide-card">
-        <h3>🚀 How to use in Google Meet & Zoom:</h3>
+        <div class="guide-header">
+          <span class="guide-icon">🚀</span>
+          <h3>How to Use in Live Video Calls</h3>
+        </div>
         <ol>
-          <li>Join your <strong>Google Meet</strong>, <strong>Zoom</strong>, or <strong>Teams</strong> call.</li>
-          <li>Ensure your webcam is turned ON. MemeCall automatically enhances your video stream.</li>
-          <li>Strike any pose (Peace ✌️, Thumbs Up 👍, Mewing 🤫, Scream 😱, etc.) in front of the camera!</li>
-          <li>Use the floating in-call pill on the top right to control or trigger stickers anytime.</li>
+          <li>Join <strong>Google Meet</strong>, <strong>Zoom</strong>, <strong>Teams</strong>, or <strong>Discord</strong>.</li>
+          <li>Turn ON your webcam — MemeCall automatically attaches the filter compositor.</li>
+          <li>Strike a pose (✌️ Peace, 👍 Thumbs Up, 🤫 Mewing, 😱 Scream, etc.)!</li>
+          <li>Control or fire memes manually from the floating glass pill anytime.</li>
         </ol>
       </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer">
-      <span>Works on Google Meet, Zoom Web, Teams, Discord & Classroom</span>
+      <div class="footer-dots">
+        <span class="dot-platform">Google Meet</span>
+        <span class="dot-sep">•</span>
+        <span class="dot-platform">Zoom</span>
+        <span class="dot-sep">•</span>
+        <span class="dot-platform">Teams</span>
+        <span class="dot-sep">•</span>
+        <span class="dot-platform">Discord</span>
+      </div>
     </footer>
   </div>
 

@@ -105,6 +105,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveSettings();
   });
 
+  const poseSearchInput = document.getElementById('pose-search-input');
+  const poseCountBadge = document.getElementById('pose-count-badge');
+  const fpsBadge = document.getElementById('fps-badge');
+
+  function updatePoseCount() {
+    if (!poseCountBadge) return;
+    const activeCount = Object.values(settings.poses).filter(v => v !== false).length;
+    poseCountBadge.textContent = `${activeCount} active`;
+  }
+
   // Populate Quick Test Grid & Poses Tab
   Object.values(memes).forEach(m => {
     // Quick test icon in Lab tab
@@ -122,6 +132,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Row in Poses tab
     const item = document.createElement('div');
     item.className = 'meme-item';
+    item.dataset.memeName = m.name.toLowerCase();
+    item.dataset.memeDesc = (m.description || '').toLowerCase();
     item.innerHTML = `
       <div class="meme-item-left">
         <div class="meme-item-icon">${m.icon}</div>
@@ -131,12 +143,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
       </div>
       <div class="meme-item-right">
-        <label class="switch">
+        <button class="btn-item-trigger" title="Test ${m.name} now">▶</button>
+        <label class="switch" title="Toggle pose trigger">
           <input type="checkbox" data-pose-id="${m.id}" ${settings.poses[m.id] !== false ? 'checked' : ''}>
           <span class="slider"></span>
         </label>
       </div>
     `;
+
+    const triggerBtn = item.querySelector('.btn-item-trigger');
+    triggerBtn.addEventListener('click', () => {
+      if (window.MemeRenderer) {
+        window.MemeRenderer.triggerMeme(m.id, settings.sfx);
+      }
+    });
 
     const poseCheck = item.querySelector('input[type="checkbox"]');
     poseCheck.addEventListener('change', () => {
@@ -144,11 +164,31 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (window.MemePoseDetector) {
         window.MemePoseDetector.setEnabledMemes(settings.poses);
       }
+      updatePoseCount();
       saveSettings();
     });
 
     poseList.appendChild(item);
   });
+
+  updatePoseCount();
+
+  // Search input filter
+  if (poseSearchInput) {
+    poseSearchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const items = poseList.querySelectorAll('.meme-item');
+      items.forEach(item => {
+        const name = item.dataset.memeName || '';
+        const desc = item.dataset.memeDesc || '';
+        if (name.includes(q) || desc.includes(q)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  }
 
   // Live Camera Sandbox
   async function startCamera() {
