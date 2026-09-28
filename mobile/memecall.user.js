@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         MemeCall - AI Pose Meme Filter for Mobile & Desktop
-// @namespace    https://github.com/memecall
-// @version      1.0.0
+// @namespace    https://github.com/jbc-cmd/Memecall
+// @version      1.0.1
 // @description  Pose-activated meme filters for Google Meet, Zoom, Teams, and video calls on Mobile & Desktop!
-// @author       MemeCall
+// @author       jbc-cmd
+// @homepageURL  https://github.com/jbc-cmd/Memecall
 // @match        *://meet.google.com/*
 // @match        *://*.zoom.us/*
 // @match        *://teams.microsoft.com/*
