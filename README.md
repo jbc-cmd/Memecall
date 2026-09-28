@@ -87,5 +87,16 @@ Memecall/
 │   ├── meme-renderer.js       # Dynamic spring animations & canvas renderer
 │   ├── meme-assets.js         # Vector sticker graphics & overlay designs
 │   └── audio-sfx.js           # Web Audio API sound effect synthesizer
+├── mobile/
+│   ├── MOBILE_GUIDE.md        # Complete mobile setup instructions
+│   ├── bookmarklet.txt        # One-tap mobile browser loader
+│   └── memecall.user.js       # Tampermonkey / Safari Userscript
 └── test-call-room.html        # Interactive video call simulation room
 ```
+
+---
+
+## 📄 License
+
+MIT License © 2026 [jbc-cmd](https://github.com/jbc-cmd)
+
