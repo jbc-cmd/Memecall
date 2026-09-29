@@ -25,7 +25,7 @@
   console.log('📱 [MemeCall Mobile] Initializing complete MemeCall Mobile & Desktop Suite...');
 
   // ==========================================
-  // 1. Audio SFX Synthesis Engine (Web Audio API) yeeeeah
+  // 1. Audio SFX Synthesis Engine (Web Audio API)
   // ==========================================
   window.MemeAudioEngine = (function () {
     let audioCtx = null;
@@ -551,7 +551,7 @@
         const data = procCtx.getImageData(0, 0, PROC_W, PROC_H).data;
         let skin = 0, sumX = 0, sumY = 0;
         for (let i = 0; i < data.length; i += 4) {
-          const r = data[i], g = data[i + 1], b = data[i + 2];
+          const r = data[i], g = data[i+1], b = data[i+2];
           if (r > 70 && g > 35 && b > 20 && r > g && r > b) {
             skin++;
             const idx = i / 4;
@@ -627,7 +627,7 @@
         const hiddenVid = document.createElement('video');
         hiddenVid.autoplay = true; hiddenVid.muted = true; hiddenVid.playsInline = true;
         hiddenVid.srcObject = new MediaStream([vTrack]);
-        await hiddenVid.play().catch(() => { });
+        await hiddenVid.play().catch(() => {});
 
         const settings = vTrack.getSettings ? vTrack.getSettings() : {};
         const width = settings.width || 640;
