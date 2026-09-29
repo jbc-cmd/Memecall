@@ -1,5 +1,5 @@
 # 🎭 MemeCall - AI Pose-Activated Meme Filter Chrome Extension
- ( Edit it)
+
 > Turn your webcam into a hilarious meme generator! Strike a pose during a **Google Meet**, **Zoom**, **Microsoft Teams**, **Discord**, or **Google Classroom** call, and MemeCall will instantly project animated meme stickers, sound effects, and comic overlays onto your live camera feed in real time.
 
 ---
@@ -8,7 +8,16 @@
 
 - 📹 **Seamless WebRTC Interception**: Hooks directly into `navigator.mediaDevices.getUserMedia`. All meeting attendees will see your meme filters directly on your camera without requiring any third-party virtual webcam software like OBS!
 - 🤖 **Real-Time AI Pose & Gesture Tracking**: Ultra-low latency visual recognition runs at 60 FPS directly on your device.
-- 🎨 **10+ Animated Meme Stickers & Overlays**:
+- 🎨 **19+ Animated Meme Stickers & Overlays**:
+  - 🎭 **Gronk Meme Universe**:
+    - 💅 **Baddie Gronk**: Mascara Wand & Fluttery Eyelashes
+    - 🤓 **Nerd Gronk**: Thick Glasses & *"Umm Actually..."* ☝️
+    - 😐 **NPC Gronk**: 1000-Yard Stare & Deadpan Stare
+    - 🤨 **Smug Gronk**: Eyebrow / Chin Tilt (*Vine Boom / Sus*)
+    - 😫 **Scream Gronk**: Gaping Wojak Scream & Shock Eyes
+    - 🍭 **Beanie Gronk**: Spinning Propeller Hat & Rainbow Lollipop
+    - 😄 **Laugh Gronk**: Buck Teeth Laughing Creature
+    - 😛 **Blep Gronk**: Derp Blep with Tongue Out
   - ✌️ **Peace Sign**: Anime Kawaii Sparkles, Anime Eyes & "SUGOI!" Speech Bubble
   - 👍 **Thumbs Up**: Gigachad Sunglasses & Golden "APPROVED" Rubber Stamp
   - 👎 **Thumbs Down**: Sad Cat Tears & Red "SKILL ISSUE / REJECTED" Stamp
